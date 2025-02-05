@@ -42,7 +42,8 @@ def index():
 def create_accounts():
     """
     Creates an Account
-    This endpoint will create an Account based the data in the body that is posted
+    This endpoint will create an Account based
+    the data in the body that is posted
     """
     app.logger.info("Request to create an Account")
     check_content_type("application/json")
@@ -51,11 +52,18 @@ def create_accounts():
     account.create()
     message = account.serialize()
     # Uncomment once get_accounts has been implemented
-    # location_url = url_for("get_accounts", account_id=account.id, _external=True)
+    """
+    location_url = url_for(
+        "get_accounts",
+        account_id=account.id,
+        _external=True
+    )
+    """
     location_url = "/"  # Remove once get_accounts has been implemented
     return make_response(
         jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
     )
+
 
 ######################################################################
 # LIST ALL ACCOUNTS
@@ -73,6 +81,7 @@ def list_accounts():
     app.logger.info("Listing [%s] accounts", len(account_list))
     return jsonify(account_list), status.HTTP_200_OK
 
+
 ######################################################################
 # READ AN ACCOUNT
 ######################################################################
@@ -85,7 +94,10 @@ def read_account(id):
     app.logger.info("Request to read an Account with id: %s", id)
     account = Account.find(id)
     if not account:
-        abort(status.HTTP_404_NOT_FOUND, f"Account with id  [{id}] does not exist.")
+        abort(
+            status.HTTP_404_NOT_FOUND,
+            f"Account with id  [{id}] does not exist."
+        )
     return jsonify(account.serialize()), status.HTTP_200_OK
 
 
@@ -102,12 +114,16 @@ def update_accounts(id):
 
     account = Account.find(id)
     if not account:
-        abort(status.HTTP_404_NOT_FOUND, f"Account with id [{id}] could not be found.")
+        abort(
+            status.HTTP_404_NOT_FOUND,
+            f"Account with id [{id}] could not be found."
+        )
 
     account.deserialize(request.get_json())
     account.update()
 
     return jsonify(account.serialize()), status.HTTP_200_OK
+
 
 ######################################################################
 # DELETE AN ACCOUNT
@@ -122,6 +138,7 @@ def delete_account(id):
     if not account:
         account.delete()
     return "", status.HTTP_204_NO_CONTENT
+
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
