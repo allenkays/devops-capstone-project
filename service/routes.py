@@ -99,12 +99,20 @@ def update_accounts(id):
     account.update()
 
     return jsonify(account.serialize()), status.HTTP_200_OK
+
 ######################################################################
 # DELETE AN ACCOUNT
 ######################################################################
-
-# ... place you code here to DELETE an account ...
-
+@app.route("/accounts/<int:id>", methods=["DELETE"])
+def delete_account(id):
+    """
+    This endpoint should delete an account based on entered id
+    """
+    app.logger.info("Request to delete  an Account with id: %s", id)
+    account = Account.find(id)
+    if not account:
+        account.delete()
+    return "", status.HTTP_204_NO_CONTENT
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
